@@ -25,7 +25,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "viem": "2.57.4"
+    "viem": "2.57.16"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
