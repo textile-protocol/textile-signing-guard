@@ -1,22 +1,45 @@
 # Version updates for the public mirror. The mirror is overwritten on every
 # sync, so land the bump in the monorepo (packages/signing-guard) and let it
 # sync back; these PRs are the notice, not the merge path.
+#
+# A release has to be 30 days old before it is proposed, the same rule the
+# pinned versions follow, unless it fixes an advisory (Dependabot security
+# updates ignore the cooldown). The Node runtime major is a deliberate move
+# of the build image, the distroless runtime image and @types/node together,
+# so those majors are not proposed one at a time.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 30
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 30
+    ignore:
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
   - package-ecosystem: docker-compose
     directory: /quickstart
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 30
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 30
+    groups:
+      actions:
+        patterns: ['*']
