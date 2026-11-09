@@ -1,0 +1,31 @@
+# Run the Signing Guard serving TLS itself, with your own certificate. For
+# the simpler setup with automatic HTTPS, use quickstart/ instead.
+#
+# Replace the digest with the one you verified (docs/operations.md, "Pinning
+# the image"), put guard.json, the two PEM files and the TLS pair under ./config,
+# and point the co-signer's callback handler URL at https://<this host>:8443.
+#
+# The container is read-only, unprivileged and has no shell. The only mount is
+# the config directory, read-only.
+services:
+  signing-guard:
+    image: ghcr.io/textile-protocol/textile-signing-guard@sha256:REPLACE_WITH_VERIFIED_DIGEST
+    container_name: signing-guard
+    restart: unless-stopped
+    init: true
+    read_only: true
+    user: '65532:65532'
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config:ro
+    # Publish only on the interface the co-signer reaches, e.g. '10.0.1.5:8443:8443'.
+    ports:
+      - '8443:8443'
+    # The guard needs outbound HTTPS to the reference price source only.
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '20'

@@ -1,0 +1,46 @@
+# The quickest way to run the Signing Guard: the guard behind Caddy, which
+# gets and renews a Let's Encrypt certificate for your domain and only lets
+# your co-signer's IP through. See the wiki's Getting started page.
+#
+#   cp .env.example .env    # set GUARD_DOMAIN and COSIGNER_IP
+#   docker compose up -d
+#
+# For production, replace the version tag with the release's digest
+# (image: ghcr.io/textile-protocol/textile-signing-guard@sha256:...).
+services:
+  guard:
+    image: ghcr.io/textile-protocol/textile-signing-guard:0.2.0
+    restart: unless-stopped
+    init: true
+    read_only: true
+    user: '65532:65532'
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config:ro
+    # Not published: only Caddy reaches it, on the compose network.
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '20'
+
+  caddy:
+    image: caddy:2.11.9@sha256:0c2243efcf437ab7f7a978f1027fcf0d4f9be8a75df27b1b3fbc5dbe0ffa8cf0
+    restart: unless-stopped
+    depends_on: [guard]
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      GUARD_DOMAIN: ${GUARD_DOMAIN:?set GUARD_DOMAIN in .env}
+      COSIGNER_IP: ${COSIGNER_IP:?set COSIGNER_IP in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

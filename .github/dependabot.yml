@@ -1,0 +1,22 @@
+# Version updates for the public mirror. The mirror is overwritten on every
+# sync, so land the bump in the monorepo (packages/signing-guard) and let it
+# sync back; these PRs are the notice, not the merge path.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker-compose
+    directory: /quickstart
+    schedule:
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

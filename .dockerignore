@@ -1,0 +1,26 @@
+# Only sources, tests, the lockfile and the example config go into the build.
+node_modules
+dist
+*.md
+assets
+docs
+wiki
+.github
+.textile-monorepo-*
+docker-compose*.yml
+# The tests check the quickstart's config and image tag; nothing else of it.
+quickstart/*
+!quickstart/docker-compose.yml
+!quickstart/config
+quickstart/config/keys
+Dockerfile
+.dockerignore
+# Never bake a policy, a key or a certificate into the image.
+config/*
+!config/guard.example.json
+*.pem
+*.key
+*.crt
+*.p12
+.env
+.env.*

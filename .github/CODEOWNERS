@@ -1,0 +1,10 @@
+# CODEOWNERS for textile-signing-guard (public mirror).
+#
+# Source of truth: textile-monorepo at packages/signing-guard/.github/CODEOWNERS.
+# .github/workflows/sync-signing-guard.yml syncs it into the mirror, so do not
+# edit it here; the next sync overwrites it.
+#
+# Swap @bnolens for an org team (e.g. @textile-protocol/signing-guard) once one
+# exists.
+
+* @bnolens

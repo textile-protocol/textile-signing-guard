@@ -1,0 +1,84 @@
+{
+  "listen": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "plain_http": true
+  },
+  "keys": {
+    "cosigner_public_key_file": "/config/keys/cosigner_public.pem",
+    "handler_private_key_file": "/config/keys/handler_private.pem"
+  },
+  "vault": {
+    "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+    "fireblocks_vault_account_id": "0"
+  },
+  "chain_id": 8453,
+  "allow": {
+    "permit2_orders": true,
+    "maker_session": true,
+    "maker_enroll": true,
+    "signer_check": false,
+    "erc20_approve_permit2": false
+  },
+  "order": {
+    "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+    "reactor": "0xEb5A29F869FF084B3Fce18d3487a38A56feDC59E",
+    "tokens": [
+      {
+        "symbol": "ZARU",
+        "address": "0xE205b4e7Ac03E3f7b2060C3EDf2171AA7126C0d5",
+        "decimals": 18
+      },
+      {
+        "symbol": "USDC",
+        "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "decimals": 6
+      }
+    ],
+    "validation_contracts": [
+      "0x0000000000000000000000000000000000000000",
+      "0x80a4238ceF3504A24F53D45Ee295b45fD6314Bb2"
+    ],
+    "max_input_amount": {
+      "ZARU": "100000",
+      "USDC": "5000"
+    },
+    "max_lifetime_secs": 180,
+    "clock_skew_secs": 10
+  },
+  "price": {
+    "url": "https://api.luno.com/api/1/ticker?pair=USDCZARU",
+    "pair": "USDCZARU",
+    "base_token": "USDC",
+    "quote_token": "ZARU",
+    "max_deviation_bps": 50,
+    "min_price": "12",
+    "max_price": "24",
+    "max_spread_bps": 300,
+    "max_age_secs": 60,
+    "max_source_age_secs": 600,
+    "refresh_secs": 5,
+    "timeout_ms": 3000
+  },
+  "venue": {
+    "session_domain_name": "Textile Maker Session (LIVE)",
+    "enroll_domain_name": "Textile Maker Enroll (LIVE)",
+    "max_issued_at_skew_secs": 300
+  },
+  "approve": {
+    "max_amount": {
+      "ZARU": "200000",
+      "USDC": "10000"
+    },
+    "asset_ids": [
+      "BASECHAIN_ETH"
+    ]
+  },
+  "signing_payload": {
+    "require": false
+  },
+  "config_change_action": "REJECT",
+  "jwt": {
+    "clock_skew_secs": 60
+  }
+}

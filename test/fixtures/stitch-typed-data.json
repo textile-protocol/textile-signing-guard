@@ -1,0 +1,817 @@
+{
+  "source": "textile-stitch src/protocol/typed_data.rs (Eip712Payload::typed_data) and src/rfq/order.rs (build_order), dumped by a throwaway cargo test on the same commit",
+  "fixtures": [
+    {
+      "digest": "0x3da04c3f39c281f01bb6e60fed3f1e5472871d56972b7270e1d6688efadfe321",
+      "name": "permit2_sell_zaru_rfq",
+      "typedData": {
+        "domain": {
+          "chainId": 8453,
+          "name": "Permit2",
+          "verifyingContract": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+        },
+        "message": {
+          "deadline": "1800000120",
+          "nonce": "71967512989470864093478216482306347412380097211829946307111256502388617832440",
+          "permitted": {
+            "amount": "1000000000000000000000",
+            "token": "0xe205b4e7ac03e3f7b2060c3edf2171aa7126c0d5"
+          },
+          "spender": "0xeb5a29f869ff084b3fce18d3487a38a56fedc59e",
+          "witness": {
+            "info": {
+              "additionalValidationContract": "0x80a4238cef3504a24f53d45ee295b45fd6314bb2",
+              "additionalValidationData": "0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000006b49d27800000000000000000000000000000000000000000000000000000000000000010000000000000000000000003c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+              "deadline": "1800000120",
+              "nonce": "71967512989470864093478216482306347412380097211829946307111256502388617832440",
+              "reactor": "0xeb5a29f869ff084b3fce18d3487a38a56fedc59e",
+              "swapper": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+            },
+            "inputAmount": "1000000000000000000000",
+            "inputToken": "0xe205b4e7ac03e3f7b2060c3edf2171aa7126c0d5",
+            "outputs": [
+              {
+                "amount": "59916117",
+                "recipient": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+                "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+              }
+            ]
+          }
+        },
+        "primaryType": "PermitWitnessTransferFrom",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "verifyingContract",
+              "type": "address"
+            }
+          ],
+          "LimitOrder": [
+            {
+              "name": "info",
+              "type": "OrderInfo"
+            },
+            {
+              "name": "inputToken",
+              "type": "address"
+            },
+            {
+              "name": "inputAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "outputs",
+              "type": "OutputToken[]"
+            }
+          ],
+          "OrderInfo": [
+            {
+              "name": "reactor",
+              "type": "address"
+            },
+            {
+              "name": "swapper",
+              "type": "address"
+            },
+            {
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "additionalValidationContract",
+              "type": "address"
+            },
+            {
+              "name": "additionalValidationData",
+              "type": "bytes"
+            }
+          ],
+          "OutputToken": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "PermitWitnessTransferFrom": [
+            {
+              "name": "permitted",
+              "type": "TokenPermissions"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "witness",
+              "type": "LimitOrder"
+            }
+          ],
+          "TokenPermissions": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0xd2b0e35052879b214b3325b31d7a06c2f1ea435d9d19de8d3af8183bade20be1",
+      "name": "permit2_buy_zaru_rfq",
+      "typedData": {
+        "domain": {
+          "chainId": 8453,
+          "name": "Permit2",
+          "verifyingContract": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+        },
+        "message": {
+          "deadline": "1800000120",
+          "nonce": "71967512989470864093478216482306347412380097211829946307111256502388617832441",
+          "permitted": {
+            "amount": "1000000000",
+            "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+          },
+          "spender": "0xeb5a29f869ff084b3fce18d3487a38a56fedc59e",
+          "witness": {
+            "info": {
+              "additionalValidationContract": "0x80a4238cef3504a24f53d45ee295b45fd6314bb2",
+              "additionalValidationData": "0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000006b49d27800000000000000000000000000000000000000000000000000000000000000010000000000000000000000003c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+              "deadline": "1800000120",
+              "nonce": "71967512989470864093478216482306347412380097211829946307111256502388617832441",
+              "reactor": "0xeb5a29f869ff084b3fce18d3487a38a56fedc59e",
+              "swapper": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+            },
+            "inputAmount": "1000000000",
+            "inputToken": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            "outputs": [
+              {
+                "amount": "16690000000000000000000",
+                "recipient": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+                "token": "0xe205b4e7ac03e3f7b2060c3edf2171aa7126c0d5"
+              }
+            ]
+          }
+        },
+        "primaryType": "PermitWitnessTransferFrom",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "verifyingContract",
+              "type": "address"
+            }
+          ],
+          "LimitOrder": [
+            {
+              "name": "info",
+              "type": "OrderInfo"
+            },
+            {
+              "name": "inputToken",
+              "type": "address"
+            },
+            {
+              "name": "inputAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "outputs",
+              "type": "OutputToken[]"
+            }
+          ],
+          "OrderInfo": [
+            {
+              "name": "reactor",
+              "type": "address"
+            },
+            {
+              "name": "swapper",
+              "type": "address"
+            },
+            {
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "additionalValidationContract",
+              "type": "address"
+            },
+            {
+              "name": "additionalValidationData",
+              "type": "bytes"
+            }
+          ],
+          "OutputToken": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "PermitWitnessTransferFrom": [
+            {
+              "name": "permitted",
+              "type": "TokenPermissions"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "witness",
+              "type": "LimitOrder"
+            }
+          ],
+          "TokenPermissions": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0xddaf5d2116fec865d7d508ca693eb9e7330cd36405fa470c68f1c9ed158b4a73",
+      "name": "permit2_buy_zaru_ladder",
+      "typedData": {
+        "domain": {
+          "chainId": 8453,
+          "name": "Permit2",
+          "verifyingContract": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+        },
+        "message": {
+          "deadline": "1800000120",
+          "nonce": "71967512989470864093478216482306347412380097211829946307111256502388617832442",
+          "permitted": {
+            "amount": "500000000",
+            "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+          },
+          "spender": "0xeb5a29f869ff084b3fce18d3487a38a56fedc59e",
+          "witness": {
+            "info": {
+              "additionalValidationContract": "0x0000000000000000000000000000000000000000",
+              "additionalValidationData": "0x",
+              "deadline": "1800000120",
+              "nonce": "71967512989470864093478216482306347412380097211829946307111256502388617832442",
+              "reactor": "0xeb5a29f869ff084b3fce18d3487a38a56fedc59e",
+              "swapper": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+            },
+            "inputAmount": "500000000",
+            "inputToken": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            "outputs": [
+              {
+                "amount": "8345000000000000000000",
+                "recipient": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+                "token": "0xe205b4e7ac03e3f7b2060c3edf2171aa7126c0d5"
+              }
+            ]
+          }
+        },
+        "primaryType": "PermitWitnessTransferFrom",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "verifyingContract",
+              "type": "address"
+            }
+          ],
+          "LimitOrder": [
+            {
+              "name": "info",
+              "type": "OrderInfo"
+            },
+            {
+              "name": "inputToken",
+              "type": "address"
+            },
+            {
+              "name": "inputAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "outputs",
+              "type": "OutputToken[]"
+            }
+          ],
+          "OrderInfo": [
+            {
+              "name": "reactor",
+              "type": "address"
+            },
+            {
+              "name": "swapper",
+              "type": "address"
+            },
+            {
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "additionalValidationContract",
+              "type": "address"
+            },
+            {
+              "name": "additionalValidationData",
+              "type": "bytes"
+            }
+          ],
+          "OutputToken": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "PermitWitnessTransferFrom": [
+            {
+              "name": "permitted",
+              "type": "TokenPermissions"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "witness",
+              "type": "LimitOrder"
+            }
+          ],
+          "TokenPermissions": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0xa0d85d813fd63060908874772e9a6f24ab6c26d22c5966fb8984984032aeda03",
+      "name": "maker_session_live",
+      "typedData": {
+        "domain": {
+          "name": "Textile Maker Session (LIVE)",
+          "version": "1"
+        },
+        "message": {
+          "challenge": "0x00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
+          "issuedAt": "1800000000000",
+          "makerId": "mk_first_client",
+          "signingAddress": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+        },
+        "primaryType": "MakerSession",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            }
+          ],
+          "MakerSession": [
+            {
+              "name": "makerId",
+              "type": "string"
+            },
+            {
+              "name": "signingAddress",
+              "type": "address"
+            },
+            {
+              "name": "challenge",
+              "type": "bytes32"
+            },
+            {
+              "name": "issuedAt",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0x67d0f7d6f3b7b9734283c8aee89061b63c119d46bca37dd8f760d496c6527aae",
+      "name": "maker_session_test",
+      "typedData": {
+        "domain": {
+          "name": "Textile Maker Session (TEST)",
+          "version": "1"
+        },
+        "message": {
+          "challenge": "0x00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
+          "issuedAt": "1800000000000",
+          "makerId": "mk_first_client",
+          "signingAddress": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+        },
+        "primaryType": "MakerSession",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            }
+          ],
+          "MakerSession": [
+            {
+              "name": "makerId",
+              "type": "string"
+            },
+            {
+              "name": "signingAddress",
+              "type": "address"
+            },
+            {
+              "name": "challenge",
+              "type": "bytes32"
+            },
+            {
+              "name": "issuedAt",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0xfd84bde33f23a6c7d4815b06cfe012d41125b3adb84edd0d85107c8b6544e5bc",
+      "name": "maker_enroll_live_base",
+      "typedData": {
+        "domain": {
+          "chainId": 8453,
+          "name": "Textile Maker Enroll (LIVE)",
+          "version": "1"
+        },
+        "message": {
+          "chainId": "8453",
+          "fundingWallet": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          "issuedAt": "1800000000000",
+          "signingAddress": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+        },
+        "primaryType": "MakerEnroll",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            }
+          ],
+          "MakerEnroll": [
+            {
+              "name": "signingAddress",
+              "type": "address"
+            },
+            {
+              "name": "fundingWallet",
+              "type": "address"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "issuedAt",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0x2b9f5a9652c4c83f60d56e83532b3e981a18717f5f44168a8e0ec5311e4f61a8",
+      "name": "maker_enroll_live_bsc",
+      "typedData": {
+        "domain": {
+          "chainId": 56,
+          "name": "Textile Maker Enroll (LIVE)",
+          "version": "1"
+        },
+        "message": {
+          "chainId": "56",
+          "fundingWallet": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          "issuedAt": "1800000000000",
+          "signingAddress": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+        },
+        "primaryType": "MakerEnroll",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            }
+          ],
+          "MakerEnroll": [
+            {
+              "name": "signingAddress",
+              "type": "address"
+            },
+            {
+              "name": "fundingWallet",
+              "type": "address"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "issuedAt",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0x491066be5bd5b371ce244119b5b1466035d0f2b09a4eaa2fc76129a95b126d1d",
+      "name": "signer_check",
+      "typedData": {
+        "domain": {
+          "name": "Stitch Signer Check",
+          "version": "1"
+        },
+        "message": {
+          "nonce": "0x00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff"
+        },
+        "primaryType": "SignerCheck",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            }
+          ],
+          "SignerCheck": [
+            {
+              "name": "nonce",
+              "type": "bytes32"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0xdaac7dd96af7b03632e6fe5cdfe542a5f03d1accad00c9c999d01928a426f12e",
+      "name": "nav_attestation_v2",
+      "typedData": {
+        "domain": {
+          "chainId": "8453",
+          "name": "OperatorVault",
+          "verifyingContract": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          "version": "2"
+        },
+        "message": {
+          "chainId": "8453",
+          "corridorAssetPrice": "1500000000000000000",
+          "epochId": "7",
+          "freeCorridor": "4000000000000000000",
+          "freeSettlement": "10000000",
+          "lastSettledNav": "12345",
+          "validAfter": "1700000000",
+          "validUntil": "1700003600",
+          "vault": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+        },
+        "primaryType": "NavAttestation",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "verifyingContract",
+              "type": "address"
+            }
+          ],
+          "NavAttestation": [
+            {
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "epochId",
+              "type": "uint256"
+            },
+            {
+              "name": "corridorAssetPrice",
+              "type": "uint256"
+            },
+            {
+              "name": "lastSettledNav",
+              "type": "uint256"
+            },
+            {
+              "name": "freeSettlement",
+              "type": "uint256"
+            },
+            {
+              "name": "freeCorridor",
+              "type": "uint256"
+            },
+            {
+              "name": "validAfter",
+              "type": "uint256"
+            },
+            {
+              "name": "validUntil",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "digest": "0x376c512643ca9d96c8028da3c194cef50958ce8c256d859f09a5759ca36679c8",
+      "name": "recall_quote",
+      "typedData": {
+        "domain": {
+          "chainId": 42220,
+          "name": "Textile GMX Recall",
+          "verifyingContract": "0x0101010101010101010101010101010101010101",
+          "version": "1"
+        },
+        "message": {
+          "createdAt": "1800000000",
+          "maxDebit": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+          "maxRecallPrice": "500500",
+          "orderDigest": "0x0202020202020202020202020202020202020202020202020202020202020202",
+          "taker": "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"
+        },
+        "primaryType": "RecallQuote",
+        "types": {
+          "EIP712Domain": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "verifyingContract",
+              "type": "address"
+            }
+          ],
+          "RecallQuote": [
+            {
+              "name": "orderDigest",
+              "type": "bytes32"
+            },
+            {
+              "name": "taker",
+              "type": "address"
+            },
+            {
+              "name": "maxDebit",
+              "type": "uint256"
+            },
+            {
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "name": "maxRecallPrice",
+              "type": "uint256"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

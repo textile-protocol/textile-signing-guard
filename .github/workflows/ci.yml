@@ -1,0 +1,78 @@
+name: CI
+
+# Runs in the textile-signing-guard mirror. The monorepo's
+# sync-signing-guard.yml runs the same gates on the exported tree before it
+# pushes, so a red mirror means someone pushed around it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+
+      - name: Install exactly the lockfile
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build (tsc, which is also the type check) and test
+        run: npm test
+
+      - name: Runtime dependency tree matches the lockfile
+        run: npm ls --omit=dev --all
+
+  image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: The quickstart compose file is valid
+        run: GUARD_DOMAIN=guard.example.com COSIGNER_IP=203.0.113.10 docker compose -f quickstart/docker-compose.yml config --quiet
+
+      - name: Build the image (the tests run inside the build)
+        run: docker build -t signing-guard-ci .
+
+      - name: Smoke-test the image the way it runs in production
+        # Throwaway keys and the example config on plain HTTP. Read-only,
+        # non-root, no capabilities: the same flags as docker-compose.example.yml.
+        run: |
+          set -euo pipefail
+          dir="$(mktemp -d)"
+          mkdir -p "$dir/keys"
+          openssl genrsa -out "$dir/keys/cosigner_private.pem" 2048 2>/dev/null
+          openssl rsa -in "$dir/keys/cosigner_private.pem" -pubout -out "$dir/keys/cosigner_public.pem" 2>/dev/null
+          openssl genrsa -out "$dir/keys/handler_private.pem" 2048 2>/dev/null
+          jq '.listen = {host: "127.0.0.1", port: 8443, plain_http: true}' config/guard.example.json > "$dir/guard.json"
+          chmod -R a+rX "$dir"
+          run_guard() {
+            docker run --rm --read-only --user 65532:65532 --cap-drop ALL \
+              --security-opt no-new-privileges:true -v "$dir:/config:ro" \
+              signing-guard-ci "$@"
+          }
+          run_guard version
+          run_guard check-config --config /config/guard.json
+          # The acceptance suite against a guard the image starts on loopback.
+          # The reference price comes from the real ticker, so a network or
+          # ticker failure shows up as a failed report.
+          run_guard acceptance --config /config/guard.json

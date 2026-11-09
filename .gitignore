@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# Keys and local settings for the quickstart never go into git.
+quickstart/.env
+quickstart/config/keys/*.pem

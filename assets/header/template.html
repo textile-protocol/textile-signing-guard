@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 900; src: url("fonts/Poppins-Black.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("fonts/Poppins-SemiBold.ttf"); }
+  html, body { margin: 0; padding: 0; width: 1774px; height: 887px; overflow: hidden; }
+  body { font-family: "Poppins", sans-serif; position: relative; }
+  body.dark  { background: #2b2e3b; --fill: #f7f1e3; --sub: #f7f1e3; --dots: #7f8397; --line: #8c90a3; --paper: #2b2e3b; --ink: #f7f1e3; }
+  body.light { background: #fbf7ef; --fill: #1c1c1c; --sub: #1c1c1c; --dots: #4a4a4a; --line: #2b2b2b; --paper: #fbf7ef; --ink: #1c1c1c; }
+  svg.bg { position: absolute; inset: 0; width: 1774px; height: 887px; }
+  .title { position: absolute; left: 0; right: 0; top: 296px; text-align: center; font-weight: 900; font-size: 108px; letter-spacing: 4px; line-height: 1; }
+  .title span { position: absolute; left: 0; right: 0; }
+  .title .l1 { color: #6b8dff; transform: translate(-10px, -9px); }
+  .title .l2 { color: #ee6fa3; transform: translate(10px, -9px); }
+  .title .l3 { color: #f2c24d; transform: translate(0px, 10px); }
+  .title .l4 { color: var(--fill); -webkit-text-stroke: 3.5px #1c1c1c; paint-order: stroke fill; }
+  .sub { position: absolute; left: 0; right: 0; top: 496px; text-align: center; font-weight: 600; font-size: 40px; color: var(--sub); }
+</style>
+</head>
+<body class="MODE">
+<svg class="bg" viewBox="0 0 1774 887" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2.2" fill="var(--dots)"/></pattern>
+    <pattern id="check-pink" width="48" height="48" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#ee6fa3"/><rect x="24" y="24" width="24" height="24" fill="#ee6fa3"/></pattern>
+    <pattern id="check-blue" width="48" height="48" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#6b8dff"/><rect x="24" y="24" width="24" height="24" fill="#6b8dff"/></pattern>
+    <pattern id="check-yellow" width="48" height="48" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#f2c24d"/><rect x="24" y="24" width="24" height="24" fill="#f2c24d"/></pattern>
+  </defs>
+
+  <!-- corner dot grids -->
+  <rect x="26" y="34" width="120" height="86" fill="url(#dots)"/>
+  <rect x="1650" y="140" width="98" height="100" fill="url(#dots)"/>
+  <rect x="1640" y="470" width="110" height="140" fill="url(#dots)"/>
+  <rect x="24" y="740" width="60" height="60" fill="url(#dots)"/>
+  <rect x="1180" y="820" width="130" height="50" fill="url(#dots)"/>
+
+  <!-- checkerboards -->
+  <rect x="1522" y="12" width="216" height="50" fill="url(#check-yellow)"/>
+  <rect x="26" y="560" width="168" height="48" fill="url(#check-blue)"/>
+  <rect x="30" y="810" width="216" height="46" fill="url(#check-pink)"/>
+
+  <!-- dashed waves -->
+  <path d="M0 110 C 60 40, 150 30, 250 20 S 400 10, 470 -10" fill="none" stroke="#ee6fa3" stroke-width="4" stroke-dasharray="14 10"/>
+  <path d="M1380 10 c 40 60 60 80 100 90 s 90 -10 130 20 s 60 60 20 80" fill="none" stroke="#6b8dff" stroke-width="4" stroke-dasharray="14 10"/>
+  <path d="M0 740 c 120 -50 220 -10 340 20" fill="none" stroke="#6b8dff" stroke-width="4" stroke-dasharray="14 10"/>
+  <path d="M0 662 c 60 -60 160 -30 220 0 s 80 40 60 60" fill="none" stroke="#f2c24d" stroke-width="4" stroke-dasharray="14 10"/>
+  <path d="M1420 887 c 60 -60 160 -60 240 -30 s 100 20 120 0" fill="none" stroke="#f2c24d" stroke-width="4" stroke-dasharray="14 10"/>
+  <path d="M1000 468 c 20 -20 40 -20 60 0 s 40 20 60 0" fill="none" stroke="#ee6fa3" stroke-width="4" stroke-dasharray="14 10"/>
+
+  <!-- zigzags -->
+  <polyline points="255,100 267,84 279,100 291,84 303,100 315,84 327,100 339,84 351,100" fill="none" stroke="#6b8dff" stroke-width="4"/>
+  <polyline points="42,380 56,400 42,420 56,440 42,460 56,480 42,500" fill="none" stroke="var(--line)" stroke-width="4"/>
+  <polyline points="1720,262 1734,282 1720,302 1734,322 1720,342 1734,362" fill="none" stroke="var(--line)" stroke-width="4"/>
+
+  <!-- x marks -->
+  <g stroke="#ee6fa3" stroke-width="4" stroke-linecap="round">
+    <path d="M64 168 l14 14 m0 -14 l-14 14"/><path d="M64 198 l14 14 m0 -14 l-14 14"/><path d="M64 228 l14 14 m0 -14 l-14 14"/><path d="M64 258 l14 14 m0 -14 l-14 14"/>
+  </g>
+  <g stroke="var(--line)" stroke-width="4" stroke-linecap="round">
+    <path d="M1690 118 l18 18 m0 -18 l-18 18"/><path d="M302 836 l18 18 m0 -18 l-18 18"/><path d="M1630 650 l18 18 m0 -18 l-18 18"/>
+    <path d="M1540 700 l40 -20 m-24 30 l40 -20 m-24 30 l40 -20"/>
+  </g>
+
+  <!-- top: a request reaches the guard and leaves as APPROVE or REJECT -->
+  <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- typed message -->
+    <path d="M640 52 h46 l18 18 v62 h-64 z" stroke="var(--line)" fill="var(--paper)"/>
+    <path d="M686 52 v18 h18" stroke="var(--line)"/>
+    <path d="M652 88 h40 M652 104 h28 M652 120 h36" stroke="#6b8dff" stroke-dasharray="8 6"/>
+    <!-- into the guard -->
+    <path d="M716 92 h88" stroke="var(--line)" stroke-dasharray="10 8"/>
+    <path d="M846 50 l38 14 v30 c0 24 -16 40 -38 50 c-22 -10 -38 -26 -38 -50 v-30 z" stroke="var(--line)" fill="#f2c24d"/>
+    <path d="M832 84 h28 M832 100 h28" stroke="#1c1c1c" stroke-width="4"/>
+    <!-- out to the two answers -->
+    <path d="M890 92 h40 c 20 0 24 -36 44 -36 h48" stroke="var(--line)" stroke-dasharray="10 8"/>
+    <path d="M930 92 c 20 0 24 36 44 36 h48" stroke="var(--line)" stroke-dasharray="10 8"/>
+    <circle cx="1046" cy="56" r="22" stroke="#22a597" fill="var(--paper)"/>
+    <path d="M1035 57 l8 8 l14 -16" stroke="#22a597"/>
+    <circle cx="1046" cy="128" r="22" stroke="#ee6fa3" fill="var(--paper)"/>
+    <path d="M1038 120 l16 16 m0 -16 l-16 16" stroke="#ee6fa3"/>
+  </g>
+
+  <!-- left: shield with a check -->
+  <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M232 262 l60 20 v48 c0 40 -26 66 -60 82 c-34 -16 -60 -42 -60 -82 v-48 z" stroke="var(--line)" fill="var(--paper)"/>
+    <path d="M232 279 l44 15 v38 c0 30 -18 50 -44 62 z" fill="#6b8dff" stroke="none"/>
+    <path d="M208 338 l17 17 l34 -38" stroke="var(--ink)" stroke-width="7"/>
+  </g>
+  <rect x="150" y="452" width="180" height="50" fill="url(#dots)"/>
+
+  <!-- right: padlock -->
+  <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1514 318 v-28 c0 -26 20 -42 42 -42 s42 16 42 42 v28" stroke="var(--line)"/>
+    <rect x="1492" y="318" width="128" height="96" rx="12" stroke="var(--line)" fill="#ee6fa3"/>
+    <circle cx="1556" cy="358" r="11" fill="#1c1c1c" stroke="none"/>
+    <path d="M1556 364 v24" stroke="#1c1c1c" stroke-width="8"/>
+  </g>
+
+  <!-- bottom centre: the handler key -->
+  <rect x="440" y="790" width="150" height="50" fill="url(#dots)"/>
+  <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="790" cy="800" r="26" stroke="var(--line)" fill="#f2c24d"/>
+    <circle cx="790" cy="800" r="9" stroke="var(--line)" fill="var(--paper)"/>
+    <path d="M816 800 h120 M900 800 v18 M920 800 v24" stroke="var(--line)"/>
+  </g>
+
+  <!-- bottom right: the price band, one print inside, one outside -->
+  <g fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M1180 712 h300 M1180 772 h300" stroke="#6b8dff" stroke-dasharray="12 9"/>
+    <path d="M1180 742 c 30 -16 50 18 80 6 s 40 -22 70 -4 s 50 14 80 -2 s 40 -6 70 4" stroke="var(--line)"/>
+    <circle cx="1300" cy="740" r="8" fill="#22a597" stroke="none"/>
+    <path d="M1404 676 l16 16 m0 -16 l-16 16" stroke="#ee6fa3"/>
+  </g>
+</svg>
+<div class="title">
+  <span class="l1">SIGNING GUARD</span><span class="l2">SIGNING GUARD</span><span class="l3">SIGNING GUARD</span><span class="l4">SIGNING GUARD</span>
+</div>
+<div class="sub">A co-signer guard for Textile FX</div>
+</body>
+</html>

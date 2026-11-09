@@ -1,0 +1,10 @@
+# HTTPS for the guard. Caddy gets the certificate for GUARD_DOMAIN on first
+# start (port 80 must be reachable for that) and renews it on its own.
+# Requests from anywhere but COSIGNER_IP get a 403 before they reach the guard.
+{$GUARD_DOMAIN} {
+	@cosigner remote_ip {$COSIGNER_IP}
+	handle @cosigner {
+		reverse_proxy guard:8080
+	}
+	respond 403
+}

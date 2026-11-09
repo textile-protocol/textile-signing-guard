@@ -1,0 +1,274 @@
+name: Release
+
+# Builds the image from this repository and publishes it to
+# ghcr.io/textile-protocol/textile-signing-guard for linux/amd64 and
+# linux/arm64. The test suite runs inside each build, so an image that fails
+# a test is never pushed.
+#
+# Every push to main that changes what goes into the image publishes `main`
+# and `sha-<commit>`. When package.json carries a version with no matching
+# `v<version>` tag yet, the same run also publishes `<version>` and
+# `<major>.<minor>`, tags the commit and opens a GitHub release with the
+# CHANGELOG section and the image digest. Each published digest gets a build
+# provenance attestation, so anyone can check it was built here:
+#
+#   gh attestation verify oci://ghcr.io/textile-protocol/textile-signing-guard@sha256:<digest> \
+#     --repo textile-protocol/textile-signing-guard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'config/guard.example.json'
+      - 'quickstart/docker-compose.yml'
+      - 'quickstart/config/guard.json'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'CHANGELOG.md'
+      - '.github/workflows/release.yml'
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/textile-protocol/textile-signing-guard
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    # Releases come from main only. A manual run on any other ref stops here,
+    # and build and publish depend on this job.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      minor: ${{ steps.version.outputs.minor }}
+      release: ${{ steps.version.outputs.release }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Is this a new version?
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          version="$(jq -r .version package.json)"
+          if ! printf '%s' "${version}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "package.json version ${version} is not x.y.z" >&2
+            exit 1
+          fi
+          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v${version}" >/dev/null 2>&1; then
+            release=false
+          else
+            release=true
+          fi
+          {
+            echo "version=${version}"
+            echo "minor=${version%.*}"
+            echo "release=${release}"
+          } >> "${GITHUB_OUTPUT}"
+          echo "version ${version}, new release: ${release}"
+
+  build:
+    needs: plan
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-24.04
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
+
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image labels
+        id: meta
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
+        with:
+          images: ${{ env.IMAGE }}
+          labels: |
+            org.opencontainers.image.title=Signing Guard
+            org.opencontainers.image.version=${{ needs.plan.outputs.version }}
+
+      - name: Build, test and push by digest
+        id: build
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        with:
+          context: .
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          # The tests run inside the build: never reuse a cached test layer.
+          no-cache: true
+          provenance: false
+
+      - name: Keep the digest for the manifest list
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          mkdir -p "${RUNNER_TEMP}/digests"
+          touch "${RUNNER_TEMP}/digests/${DIGEST#sha256:}"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: digest-${{ strategy.job-index }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digest-*
+          merge-multiple: true
+
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
+
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tags
+        id: meta
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=raw,value=main
+            type=sha,prefix=sha-,format=short
+            type=raw,value=${{ needs.plan.outputs.version }},enable=${{ needs.plan.outputs.release == 'true' }}
+            type=raw,value=${{ needs.plan.outputs.minor }},enable=${{ needs.plan.outputs.release == 'true' }}
+
+      - name: Push the multi-arch manifest
+        id: manifest
+        working-directory: ${{ runner.temp }}/digests
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          set -euo pipefail
+          count="$(find . -type f | wc -l | tr -d ' ')"
+          if [ "${count}" -ne 2 ]; then
+            echo "expected digests for linux/amd64 and linux/arm64, found ${count}" >&2
+            exit 1
+          fi
+          tag_args=()
+          while IFS= read -r tag; do
+            [ -n "${tag}" ] && tag_args+=(-t "${tag}")
+          done <<< "${TAGS}"
+          sources=()
+          for digest in *; do
+            sources+=("${IMAGE}@sha256:${digest}")
+          done
+          docker buildx imagetools create "${tag_args[@]}" "${sources[@]}"
+          first_tag="$(printf '%s\n' "${TAGS}" | head -1)"
+          digest="$(docker buildx imagetools inspect "${first_tag}" --format '{{json .Manifest.Digest}}' | tr -d '"')"
+          echo "digest=${digest}" >> "${GITHUB_OUTPUT}"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.manifest.outputs.digest }}
+          push-to-registry: true
+
+      - name: Summary
+        env:
+          DIGEST: ${{ steps.manifest.outputs.digest }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          {
+            echo "## Signing Guard image"
+            echo
+            echo '```'
+            echo "${IMAGE}@${DIGEST}"
+            echo '```'
+            echo
+            echo "Tags:"
+            printf '%s\n' "${TAGS}" | sed 's/^/- /'
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Tag and publish the release
+        if: needs.plan.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.plan.outputs.version }}
+          DIGEST: ${{ steps.manifest.outputs.digest }}
+        run: |
+          set -euo pipefail
+          notes="$(mktemp)"
+          # The CHANGELOG section for this version, without its heading, with
+          # relative links pointed at the tagged files.
+          awk -v v="## ${VERSION}" '
+            $0 == v { on = 1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md \
+            | perl -pe 's{\]\((?!https?://|#)([^)]+)\)}{](https://github.com/$ENV{GITHUB_REPOSITORY}/blob/v$ENV{VERSION}/$1)}g' \
+            > "${notes}.body"
+          if [ ! -s "${notes}.body" ]; then
+            echo "CHANGELOG.md has no '## ${VERSION}' section" >&2
+            exit 1
+          fi
+          {
+            echo "## Image"
+            echo
+            echo "Pin this digest:"
+            echo
+            echo '```'
+            echo "${IMAGE}@${DIGEST}"
+            echo '```'
+            echo
+            echo "It was built by this repository's release workflow from the tagged commit. To check:"
+            echo
+            echo '```'
+            echo "gh attestation verify oci://${IMAGE}@${DIGEST} --repo ${GITHUB_REPOSITORY}"
+            echo '```'
+            echo
+            cat "${notes}.body"
+          } > "${notes}"
+          gh release create "v${VERSION}" --target "${GITHUB_SHA}" --title "v${VERSION}" --notes-file "${notes}"
